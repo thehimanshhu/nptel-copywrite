@@ -1,6 +1,7 @@
 ---
 source: https://nptel.ac.in/aboutus
 captured: 2026-11-18
+verified: live
 ---
 
 > **[CAROUSEL]** Full-width image slider at the top of the page, auto-advancing, with previous/next arrows and 7 dot indicators. Slides, in order: *Office*, *NPTEL Merchandise*, *NPTEL Stars*, *Course offering faculty*, *Special Live Series*, *Workshop*, *Coordinator*. Images have no caption text.
