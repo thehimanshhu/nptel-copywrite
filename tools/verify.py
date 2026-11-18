@@ -4,7 +4,8 @@
   python3 -I tools/verify.py <url-or-saved-html> <file.md>
 
 Live text = server-rendered <body>, minus the site-wide <header>/<footer>
-(the direct children of SvelteKit's root <div style="display: contents">),
+(the direct children of SvelteKit's root <div style="display: contents">,
+plus any nested copy of those same components, matched by class),
 minus the site-wide div.migration-notice banner, minus <script>/<style>/<svg>/<noscript>.
 Pass a file saved by tools/render.sh to check client-rendered content.
 
@@ -23,12 +24,14 @@ VOID = {'area','base','br','col','embed','hr','img','input','link','meta','sourc
 SKIP = {'script','style','svg','noscript','template'}
 
 class Text(HTMLParser):
-    def __init__(self):
+    def __init__(self, chrome=()):
         super().__init__(convert_charrefs=True)
+        self.chrome = set(chrome)  # (tag, class) of the shared Header/Footer components
         self.stack = []          # tag names
         self.root_depth = None   # depth of SvelteKit's display:contents div
         self.drop_depth = None   # depth at which we started dropping
         self.out = []
+        self.found = set()
     def handle_starttag(self, tag, attrs):
         if tag in VOID:
             if tag == 'br' and self.drop_depth is None: self.out.append('\n')
@@ -40,8 +43,10 @@ class Text(HTMLParser):
             self.root_depth = d
         if self.drop_depth is None:
             cls = (a.get('class') or '').split()
+            top = tag in ('header', 'footer') and self.root_depth and d == self.root_depth + 1
+            if top: self.found.add((tag, a.get('class') or ''))
             if (tag in SKIP or 'migration-notice' in cls       # site-wide notice banner
-                    or (tag in ('header', 'footer') and self.root_depth and d == self.root_depth + 1)):
+                    or top or (tag, a.get('class') or '') in self.chrome):   # shared header/footer, even nested
                 self.drop_depth = d
     def handle_endtag(self, tag):
         if tag in VOID or tag not in self.stack: return
@@ -53,13 +58,20 @@ class Text(HTMLParser):
         if self.drop_depth is None and 'body' in self.stack:
             self.out.append(data)
 
-def live_text(src):
+def fetch(src):
     if src.startswith('http'):
         req = urllib.request.Request(src, headers={'User-Agent': 'Mozilla/5.0 (transcription check)'})
-        raw = urllib.request.urlopen(req, timeout=60).read().decode('utf-8', 'replace')
-    else:
-        raw = open(src, encoding='utf-8').read()
-    p = Text(); p.feed(raw)
+        return urllib.request.urlopen(req, timeout=60).read().decode('utf-8', 'replace')
+    return open(src, encoding='utf-8').read()
+
+def chrome_classes():
+    # /aboutus always has the shared Header and Footer at top level; learn their
+    # (build-specific) svelte classes there so nested copies can be dropped too.
+    p = Text(); p.feed(fetch('https://nptel.ac.in/aboutus'))
+    return p.found
+
+def live_text(src):
+    p = Text(chrome_classes()); p.feed(fetch(src))
     return ' '.join(p.out)
 
 def md_text(path):
