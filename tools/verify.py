@@ -94,7 +94,7 @@ def md_text(path):
     keep = []
     for l in md.splitlines():
         s = re.sub(r'^(\s*>)+\s?', '', l)
-        if re.match(r'^\s*>\s*\*\*\[[A-Z][A-Z0-9 ·/&_+-]*\]\*\*', l): continue   # placeholder tag line
+        if re.match(r'^\s*>\s*\*\*\[[A-Z][A-Za-z0-9 ·/&_+-]*\]\*\*', l): continue   # placeholder tag line
         if re.match(r'^\s*\|?\s*:?-{3,}', s): continue         # table rule
         keep.append(s)
     t = '\n'.join(keep)
