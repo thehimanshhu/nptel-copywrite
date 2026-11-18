@@ -67,7 +67,21 @@ def fetch(src):
 def chrome_classes():
     # /aboutus always has the shared Header and Footer at top level; learn their
     # (build-specific) svelte classes there so nested copies can be dropped too.
-    p = Text(); p.feed(fetch('https://nptel.ac.in/aboutus'))
+    # Cached for an hour (classes change only when the site is redeployed).
+    import json, os, time, tempfile
+    cache = os.path.join(tempfile.gettempdir(), 'nptel-copywrite-chrome.json')
+    try:
+        if time.time() - os.path.getmtime(cache) < 3600:
+            return {tuple(x) for x in json.load(open(cache))}
+    except OSError:
+        pass
+    for attempt in range(3):
+        try:
+            p = Text(); p.feed(fetch('https://nptel.ac.in/aboutus')); break
+        except OSError:
+            if attempt == 2: raise
+            time.sleep(5)
+    json.dump(sorted(p.found), open(cache, 'w'))
     return p.found
 
 def live_text(src):
