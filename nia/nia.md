@@ -58,7 +58,7 @@ See All →
 
 > **[GRID · data]** "See All →" is a link that stays on this page and swaps the body for the full grid described below.  Four company logos, fixed in the page, in a row (no captions).
 
-> **[MODAL]** "See All →" replaces the page body with a close button (an X image at the top) and a grid of all associate companies (74, fixed list in the page's code, not from a database). Each card shows the company logo and the company name beneath it. Clicking a card opens a pop-up with a close "X", the logo, the company name as a heading and a paragraph describing the company (for some, a line "Partnering with ... since <date>" first).
+> **[MODAL]** "See All →" replaces the page body with a close button (an X image at the top) and a grid of all associate companies (74, fixed list in the page's code, not from a database). Each card shows the company logo and the company name beneath it. Clicking a card opens a pop-up with a close "X", the logo, the company name as a heading and a paragraph describing the company (for some, a line "Partnering with ... since {date}" first).
 
 ## Industry Specific Courses
 

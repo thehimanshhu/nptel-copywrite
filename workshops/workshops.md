@@ -176,7 +176,7 @@ APPLICABLE ONLY TO STUDENTS
 
 #### Awareness Workshop
 
-> **[DROPDOWN]** Year selector. Options: 2026 (selected by default), 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009. Shows one table per year; if a year has no rows the page shows "No data available for <year>". The Venue is a link (to a gallery or video) when one exists. Years with more than 26 rows are described rather than listed.
+> **[DROPDOWN]** Year selector. Options: 2026 (selected by default), 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009. Shows one table per year; if a year has no rows the page shows "No data available for {year}". The Venue is a link (to a gallery or video) when one exists. Years with more than 26 rows are described rather than listed.
 
 #### 2026
 

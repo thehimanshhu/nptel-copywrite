@@ -79,3 +79,14 @@ python3 -I tools/verify.py /tmp/faq.html faq/faq.md                             
 * `replace`: the wording differs. This must never happen.
 * `delete`: text on the live page that is missing from the markdown. It must be copied in, or covered by a placeholder.
 * `insert`: text in the markdown that wasn't in the rendered page. This is fine for content behind tabs or clicks that weren't rendered.
+
+## Decisions
+
+These were applied across all pages. Each can be reversed.
+
+* **Pages behind a login** (`/candidate_login`, `/candidate_login/scores`, `/nia/dashboard/*`) are copied from the site code and marked `verified: source-only`.
+* **`/exam` and `/exam_1`** both load and are both transcribed. Their content is identical. The same applies to `/conference` (the support programme) and `/conferences` (the conference directory), which are different pages.
+* **Testimonials that name a person** (on `/nia`, `/industrycertification`, the Soft Skills section of `/localchapter`, the `/internship` feedback cards and the `/predocfellowship` testimonials) are described in placeholders, not copied. Unnamed quotes are copied in full, for example "Student from {city}" on `/csr` and the Ansys and Microsoft quotes on `/localchapter`.
+* **Staff and office contacts printed on a page** (helpline numbers, office emails, copying-centre contacts) are copied, because they are fixed page text.
+* **`/walloflove`** is a third-party feed (imprzd). Only the page's own heading text is copied, and the feed is a placeholder.
+* **Text that changes with a dropdown** (for example, the semester named in the star criteria) is copied for the default option. The placeholder lists the other options.
